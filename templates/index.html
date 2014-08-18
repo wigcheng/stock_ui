@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+  <h1>MayQueen StockKing 系統</h1>
+
+  <p>My first paragraph.</p>
+  <input type="text" id="theinput" name="theinput" />
+  <select name="thelist" onChange="combo(this, 'theinput')" onMouseOut="comboInit(this, 'theinput')" >
+    <option>one</option>
+    <option>two</option>
+    <option>three</option>
+  </select>
+
+  <script type="text/javascript">
+function comboInit(thelist)
+{
+  theinput = document.getElementById(theinput);  
+  var idx = thelist.selectedIndex;
+  var content = thelist.options[idx].innerHTML;
+  if(theinput.value == "")
+    theinput.value = content;   
+}
+
+function combo(thelist, theinput)
+{
+  theinput = document.getElementById(theinput);  
+  var idx = thelist.selectedIndex;
+  var content = thelist.options[idx].innerHTML;
+  theinput.value = content; 
+}
+  </script>
+</body>
+</html>
