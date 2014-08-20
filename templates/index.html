@@ -5,31 +5,20 @@
 <body>
   <h1>MayQueen StockKing 系統</h1>
 
-  <p>My first paragraph.</p>
-  <input type="text" id="theinput" name="theinput" />
-  <select name="thelist" onChange="combo(this, 'theinput')" onMouseOut="comboInit(this, 'theinput')" >
-    <option>one</option>
-    <option>two</option>
-    <option>three</option>
+  <p></p>
+  <form action="/search" method="POST">
+  <select id="thelist" name="thelist" >
+    <option>三大法人買賣統計</option>
+    <option>買賣超統計</option>
   </select>
+  <br><br>
+  <input type="text" id="codeinput" name="codeinput" />
+  <br><br>
+  <input type="submit" name="btn_ok" class ="btn-primary" value="確認">
+  </form>
 
+  {{ message }}
   <script type="text/javascript">
-function comboInit(thelist)
-{
-  theinput = document.getElementById(theinput);  
-  var idx = thelist.selectedIndex;
-  var content = thelist.options[idx].innerHTML;
-  if(theinput.value == "")
-    theinput.value = content;   
-}
-
-function combo(thelist, theinput)
-{
-  theinput = document.getElementById(theinput);  
-  var idx = thelist.selectedIndex;
-  var content = thelist.options[idx].innerHTML;
-  theinput.value = content; 
-}
   </script>
 </body>
 </html>
