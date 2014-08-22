@@ -1,0 +1,8 @@
+#!/bin/bash
+
+ytday=$(date --date="1 days ago" +"%Y%m%d")
+wget "www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U_print.php?edition=ch&filename=genpage/A"$ytday".dat&type=csv"
+mv  TWT38U_* "$ytday.csv"
+
+sed -i 's/^[^0-9]*//' "$ytday.csv"
+iconv -f big5 -t utf-8 "$ytday.csv" -o "$ytday.csv"
