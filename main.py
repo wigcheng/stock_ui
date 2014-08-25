@@ -19,9 +19,16 @@ def network(search):
 
     if search == "search":
         code_input=request.form['codeinput']
-        combo_list=request.form['thelist']
 
-        proc = subprocess.Popen(["./mini 20140821.csv %s" % code_input, ""], stdout=subprocess.PIPE, shell=True)
+        date_list = request.form['datelist']
+        if date_list.rfind('-') - date_list.find('-') < 3:
+            date_list = date_list[:date_list.find('-') + 1] + '0' + date_list[date_list.find('-') + 1:]
+        if len(date_list) - date_list.rfind('-') < 3:
+            date_list = date_list[:date_list.rfind('-') + 1] + '0' + date_list[date_list.rfind('-') + 1:]
+
+        date_list= date_list.replace('-', '')
+
+        proc = subprocess.Popen(['data/mini', 'data/' + date_list + '.csv', code_input], stdout=subprocess.PIPE)
         (out, err) = proc.communicate()
         message = out.split("\t")
 
