@@ -30,7 +30,7 @@ def network(search):
 
         proc = subprocess.Popen(['data/mini', 'data/' + date_list + '.csv', code_input], stdout=subprocess.PIPE)
         (out, err) = proc.communicate()
-        message = out.split("\t")
+        message = [date_list] + out.split("\t")
 
 
     templateData = {
