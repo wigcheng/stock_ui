@@ -20,6 +20,16 @@ def network(search):
 
     if search == "search":
         code_input=request.form['codeinput']
+        the_list=request.form['thelist']
+
+        if the_list == "投信買賣超統計":
+            print("index 0")
+        elif the_list == "外資買賣超統計":
+            print("index 1")
+        elif the_list == "自營商買賣超統計":
+            print("index 2")
+        elif the_list == "三大法人買賣超日報":
+            print("index 3")
 
         date_list_from = request.form['datelist_from']
         if date_list_from.rfind('-') - date_list_from.find('-') < 3:
@@ -55,4 +65,4 @@ def network(search):
     return render_template('index.html',**templateData)
 
 if __name__ == "__main__":
-    app.run(host='172.16.51.28', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
