@@ -10,8 +10,24 @@ EOF
 }
 
 gen_180_days | while read line; do
-wget -O - "www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U_print.php?edition=ch&filename=genpage/A"$line".dat&type=csv" > $line.csv
+
+if [[ "$1" == "waitsu" ]]; then
+    wget -O - "www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U_print.php?edition=ch&filename=genpage/A"$line".dat&type=csv" > $line.csv
+elif [[ "$1" == "tsuyinshan" ]]; then
+    wget -O - "http://www.twse.com.tw/ch/trading/fund/TWT43U/TWT43U_print.php?edition=ch&filename=genpage/A"$line".dat&type=csv" > $line.csv
+elif [[ "$1" == "toshin" ]]; then
+    wget -O - "http://www.twse.com.tw/ch/trading/fund/TWT44U/TWT44U_print.php?edition=ch&filename=genpage/A"$line".dat&type=csv" > $line.csv
+fi
+
 sleep 0.2
-sed -i 's/^[^0-9]*//' "$line.csv"
+
+if [[ "$1" == "waitsu" ]]; then
+    sed -i 's/^[^0-9]*//' "$line.csv"
+elif [[ "$1" == "tsuyinshan" ]]; then
+    sed -i 's/=*//' "$line.csv"
+elif [[ "$1" == "toshin" ]]; then
+    sed -i 's/^[^0-9]*//' "$line.csv"
+fi
+
 iconv -f big5 -t utf-8 "$line.csv" -o "$line.csv"
 done
