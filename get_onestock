@@ -1,9 +1,33 @@
 #!/bin/bash
 
 days=$(date --date="yesterday" +"%Y%m%d")
-wget -O - "www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U_print.php?edition=ch&filename=genpage/A"$days".dat&type=csv" > $days.csv
+
+if [[ "$1" == "waitsu" ]]; then
+    wget -O - "www.twse.com.tw/ch/trading/fund/TWT38U/TWT38U_print.php?edition=ch&filename=genpage/A"$days".dat&type=csv" > $days.csv
+elif [[ "$1" == "tsuyinshan" ]]; then
+    wget -O - "http://www.twse.com.tw/ch/trading/fund/TWT43U/TWT43U_print.php?edition=ch&filename=genpage/A"$days".dat&type=csv" > $days.csv
+elif [[ "$1" == "toshin" ]]; then
+    wget -O - "http://www.twse.com.tw/ch/trading/fund/TWT44U/TWT44U_print.php?edition=ch&filename=genpage/A"$days".dat&type=csv" > $days.csv
+fi
+
+
 sleep 0.2
-sed -i 's/^[^0-9]*//' "$days.csv"
+
+if [[ "$1" == "waitsu" ]]; then
+    sed -i 's/^[^0-9]*//' "$days.csv"
+elif [[ "$1" == "tsuyinshan" ]]; then
+    sed -i 's/=*//' "$days.csv"
+elif [[ "$1" == "toshin" ]]; then
+    sed -i 's/^[^0-9]*//' "$days.csv"
+fi
+
 iconv -f big5 -t utf-8 "$days.csv" -o "$days.csv"
-mv /root/"$days.csv" /root/stock_ui/data/
- 
+
+if [[ "$1" == "waitsu" ]]; then
+    mv /root/"$days.csv" /root/stock_ui/waitsu/
+elif [[ "$1" == "tsuyinshan" ]]; then
+    mv /root/"$days.csv" /root/stock_ui/tsuyinshan/
+elif [[ "$1" == "toshin" ]]; then
+    mv /root/"$days.csv" /root/stock_ui/toshin/
+fi
+
