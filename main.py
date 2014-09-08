@@ -22,15 +22,6 @@ def network(search):
         code_input=request.form['codeinput']
         the_list=request.form['thelist']
 
-        if the_list == "投信買賣超統計":
-            print("index 0")
-        elif the_list == "外資買賣超統計":
-            print("index 1")
-        elif the_list == "自營商買賣超統計":
-            print("index 2")
-        elif the_list == "三大法人買賣超日報":
-            print("index 3")
-
         date_list_from = request.form['datelist_from']
         if date_list_from.rfind('-') - date_list_from.find('-') < 3:
             date_list_from = date_list_from[:date_list_from.find('-') + 1] + '0' + date_list_from[date_list_from.find('-') + 1:]
@@ -46,7 +37,6 @@ def network(search):
             date_list_to= date_list_to[:date_list_to.rfind('-') + 1] + '0' + date_list_to[date_list_to.rfind('-') + 1:]
 
         date_dis = datetime.datetime(*map(int, date_list_to.split('-'))) - datetime.datetime(*map(int, date_list_from.split('-')))
-        print(date_dis.days)
 
         #date_list_from= date_list_from.replace('-', '')
 
@@ -54,7 +44,13 @@ def network(search):
 
         for i in range(date_dis.days):
             date = datetime.date(*map(int, date_list_from.split('-'))) + datetime.timedelta(days=i)
-            proc = subprocess.Popen(['data/mini', 'data/' + date.isoformat().replace('-', '') + '.csv', code_input], stdout=subprocess.PIPE)
+            if the_list == "投信買賣超統計":
+                proc = subprocess.Popen(['toshin/mini', 'toshin/' + date.isoformat().replace('-', '') + '.csv', code_input], stdout=subprocess.PIPE)
+            elif the_list == "外資買賣超統計":
+                proc = subprocess.Popen(['waitsu/mini', 'waitsu/' + date.isoformat().replace('-', '') + '.csv', code_input], stdout=subprocess.PIPE)
+            elif the_list == "自營商買賣超統計":
+                proc = subprocess.Popen(['tsuyinshan/mini', 'tsuyinshan/' + date.isoformat().replace('-', '') + '.csv', code_input], stdout=subprocess.PIPE)
+
             (out, err) = proc.communicate()
             message.append([date.isoformat()] + out.split("\t"))
 
