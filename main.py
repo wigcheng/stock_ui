@@ -66,7 +66,7 @@ def network(search):
     templateData = {
         'message' : message
     }
-    return render_template('3p.html',**templateData)
+    return render_template('3p.htm',**templateData)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
