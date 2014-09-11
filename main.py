@@ -15,6 +15,14 @@ app = Flask(__name__)
 def main():
     return render_template('index.html')
 
+@app.route("/3p")
+def threep():
+    return render_template('3p.htm')
+
+@app.route("/price")
+def price():
+    return render_template('price.htm')
+
 @app.route("/<search>" ,methods=['GET' , 'POST'])
 def network(search):
 
@@ -58,7 +66,7 @@ def network(search):
     templateData = {
         'message' : message
     }
-    return render_template('index.html',**templateData)
+    return render_template('3p.html',**templateData)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
