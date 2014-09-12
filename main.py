@@ -41,14 +41,15 @@ def network(search):
         date_list_to= date_list_to[:date_list_to.rfind('-') + 1] + '0' + date_list_to[date_list_to.rfind('-') + 1:]
 
     date_dis = datetime.datetime(*map(int, date_list_to.split('-'))) - datetime.datetime(*map(int, date_list_from.split('-')))
+    message = list()
+    page = ''
 
     if search == "search":
+        page='3p.htm'
         code_input=request.form['codeinput']
         the_list=request.form['thelist']
 
         #date_list_from= date_list_from.replace('-', '')
-
-        message = list()
 
         for i in range(date_dis.days):
             date = datetime.date(*map(int, date_list_from.split('-'))) + datetime.timedelta(days=i)
@@ -63,9 +64,9 @@ def network(search):
             message.append([date.isoformat()] + out.split("\t"))
     elif search == "price":
 
+        page='price.htm'
         code_input=request.form['codeinput']
         #date_list_from= date_list_from.replace('-', '')
-        message = list()
 
 #        for i in range(date_dis.days):
         date = datetime.date(*map(int, date_list_from.split('-')))
@@ -78,7 +79,7 @@ def network(search):
     templateData = {
         'message' : message
     }
-    return render_template('3p.htm',**templateData)
+    return render_template(page,**templateData)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
