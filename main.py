@@ -68,13 +68,15 @@ def network(search):
         code_input=request.form['codeinput']
         #date_list_from= date_list_from.replace('-', '')
 
-#        for i in range(date_dis.days):
-        date = datetime.date(*map(int, date_list_from.split('-')))
-        m = ''.join(map(lambda s: s if len(s) > 1 else '0' + s, map(str, date.timetuple()[:2])))
-        proc = subprocess.Popen(['price/mini','-p', 'price/' + code_input + '/' + m + '_' + code_input + '.csv'], stdout=subprocess.PIPE)
-        (out, err) = proc.communicate()
-#        message = [[l.split('\t') for l in b.split('\n')] for b in out]
-        message = [l.split('\t') for l in out.split('\n')]
+        for i in range(date_dis.days+1):
+          date = datetime.date(*map(int, date_list_from.split('-'))) + datetime.timedelta(days=i)
+          print date
+          m = ''.join(map(lambda s: s if len(s) > 1 else '0' + s, map(str, date.timetuple()[:2])))
+          proc = subprocess.Popen(['price/mini','-p', 'price/' + code_input + '/' + m + '_' + code_input + '.csv', date.isoformat().replace('-', '/')], stdout=subprocess.PIPE)
+          (out, err) = proc.communicate()
+          message.append(out.split("\t"))
+#         message = [[l.split('\t') for l in b.split('\n')] for b in out]
+#          message = [l.split('\t') for l in out.split('\n')]
 
     templateData = {
         'message' : message
