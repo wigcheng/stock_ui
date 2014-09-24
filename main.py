@@ -43,6 +43,7 @@ def network(search):
     date_dis = datetime.datetime(*map(int, date_list_to.split('-'))) - datetime.datetime(*map(int, date_list_from.split('-')))
     message = list()
     page = ''
+    total_price=0
 
     if search == "search":
         page='3p.htm'
@@ -67,18 +68,25 @@ def network(search):
         page='price.htm'
         code_input=request.form['codeinput']
         #date_list_from= date_list_from.replace('-', '')
-
+        total_cnt=0
         for i in range(date_dis.days+1):
           date = datetime.date(*map(int, date_list_from.split('-'))) + datetime.timedelta(days=i)
-          print date
           m = ''.join(map(lambda s: s if len(s) > 1 else '0' + s, map(str, date.timetuple()[:2])))
           proc = subprocess.Popen(['price/mini','-p', 'price/' + code_input + '/' + m + '_' + code_input + '.csv', date.isoformat().replace('-', '/')], stdout=subprocess.PIPE)
           (out, err) = proc.communicate()
+
+          if len(out.split("\t"))>=5:
+            total_price+=float(out.split("\t")[6])
+            total_cnt+=1
+
           message.append(out.split("\t"))
 #         message = [[l.split('\t') for l in b.split('\n')] for b in out]
-#          message = [l.split('\t') for l in out.split('\n')]
+#           message = [l.split('\t') for l in out.split('\n')]
+
+        total_price=round(total_price/total_cnt,2)
 
     templateData = {
+        'price_avg' : total_price,
         'message' : message
     }
     return render_template(page,**templateData)
